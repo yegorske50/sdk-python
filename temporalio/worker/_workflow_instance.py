@@ -2025,7 +2025,8 @@ class _WorkflowInstanceImpl(  # type: ignore[reportImplicitAbstractClass]
                 return handle
             except asyncio.CancelledError:
                 apply_child_cancel_error()
-                raise
+                if self._cancel_requested:
+                    raise
 
     async def _outbound_start_nexus_operation(
         self, input: StartNexusOperationInput[Any, OutputT]
@@ -2052,7 +2053,6 @@ class _WorkflowInstanceImpl(  # type: ignore[reportImplicitAbstractClass]
                 except asyncio.CancelledError:
                     cancel_command = self._add_command()
                     handle._apply_cancel_command(cancel_command)
-                    raise
 
         handle = _NexusOperationHandle(
             self, self._next_seq("nexus_operation"), input, operation_handle_fn()
@@ -2067,7 +2067,9 @@ class _WorkflowInstanceImpl(  # type: ignore[reportImplicitAbstractClass]
             except asyncio.CancelledError:
                 cancel_command = self._add_command()
                 handle._apply_cancel_command(cancel_command)
-                raise
+                if self._cancel_requested:
+                    raise
+
 
     #### Miscellaneous helpers ####
     # These are in alphabetical order.
