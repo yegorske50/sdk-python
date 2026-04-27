@@ -7744,7 +7744,7 @@ async def test_activity_benign_error_not_logged(client: Client):
             assert isinstance(err.value.cause.cause, ApplicationError)
             # Assert the expected category
             assert err.value.cause.cause.category == ApplicationErrorCategory.BENIGN
-            assert capturer.find_log("Completing activity as failed") == None
+            assert capturer.find_log("Completing activity as failed") is None
 
             # Run with non-benign error
             with pytest.raises(WorkflowFailureError) as err:
@@ -7762,7 +7762,7 @@ async def test_activity_benign_error_not_logged(client: Client):
             assert (
                 err.value.cause.cause.category == ApplicationErrorCategory.UNSPECIFIED
             )
-            assert capturer.find_log("Completing activity as failed") != None
+            assert capturer.find_log("Completing activity as failed") is not None
 
 
 async def test_workflow_missing_local_activity(client: Client):
@@ -8040,8 +8040,8 @@ async def test_activity_pause_unpause(client: Client, env: WorkflowEnvironment):
 
             # Check workflow complete
             result = await handle.result()
-            assert result[0] == None
-            assert result[1] == None
+            assert result[0] is None
+            assert result[1] is None
 
 
 @activity.defn
