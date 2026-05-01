@@ -2070,7 +2070,6 @@ class _WorkflowInstanceImpl(  # type: ignore[reportImplicitAbstractClass]
                 if self._cancel_requested:
                     raise
 
-
     #### Miscellaneous helpers ####
     # These are in alphabetical order.
 
